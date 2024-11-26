@@ -15,6 +15,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Install dependencies for frontend
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Run frontend unit tests
+      - name: Run frontend unit tests
+        run: |
+          cd frontend
+          npm test -- --ci --silent --coverage
+
+      # Install dependencies for backend
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      # Run backend unit tests
+      - name: Run backend unit tests
+        run: |
+          cd backend
+          npm test -- --ci --silent --coverage
+
       # Install Docker Compose
       - name: Install Docker Compose
         run: |
