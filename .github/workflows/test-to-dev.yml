@@ -49,4 +49,6 @@ jobs:
           git fetch origin dev  # Fetch the dev branch from the remote
           git checkout dev  # Check out the dev branch
           git pull origin dev  # Ensure the latest dev is pulled
-          git push origin dev:main  # Push dev to main
+          git config --global user.name "github-actions[bot]"  # Set the user name
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set the email
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev:main  # Push dev to main
