@@ -38,6 +38,6 @@ jobs:
       - name: Merge PR to dev
         if: success()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add this line to set the token
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Added this line to set the token
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge
