@@ -44,7 +44,7 @@ jobs:
 
       # Push dev to main after successful tests and PR merge
       - name: Push dev to main
-        if: success()  # Only runs if previous steps were successful
+        if: success()  # Only runs if previous steps were successful i
         run: |
           git fetch origin dev  # Fetch the latest changes
           git checkout dev      # Switch to the dev branch
