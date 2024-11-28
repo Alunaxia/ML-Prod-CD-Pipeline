@@ -42,13 +42,11 @@ jobs:
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge
 
-      # Push dev to main after successful tests and PR merge
-      - name: Push dev to main
-        if: success()  # Only runs if previous steps were successful 
+      # Pull main to resolve any conflicts and push dev to main
+      - name: Pull main and push dev to main
+        if: success()
         run: |
-          git fetch origin dev  # Fetch the latest changes
-          git checkout dev      # Switch to the dev branch
-          git pull origin dev    # Pull any new changes from dev
-          git config --global user.name "github-actions[bot]"  # Set user name for the commit
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set user email for the commit
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev:main  # Push dev to main
+          git fetch origin main  # Fetch the latest changes from main
+          git checkout dev      # Ensure you're on the dev branch
+          git pull origin main   # Pull the latest changes from main into dev
+          git push origin dev:main  # Push dev to main
