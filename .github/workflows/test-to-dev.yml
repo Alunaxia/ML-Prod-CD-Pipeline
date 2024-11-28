@@ -44,7 +44,7 @@ jobs:
 
       # Push dev to main after successful tests and PR merge
       - name: Push dev to main
-        if: success()  # Only runs if previous steps were successful i
+        if: success()  # Only runs if previous steps were successful
         run: |
           git fetch origin dev  # Fetch the dev branch from the remote
           git checkout dev  # Check out the dev branch
