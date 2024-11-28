@@ -38,6 +38,17 @@ jobs:
       - name: Merge PR to dev
         if: success()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Added this line to set the token
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add this line to set the token
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge
+
+      # Push dev to main after successful tests and PR merge
+      - name: Push dev to main
+        if: success()  # Only runs if previous steps were successful
+        run: |
+          git fetch origin dev  # Fetch the dev branch from the remote
+          git checkout dev  # Check out the dev branch
+          git pull origin dev  # Ensure the latest dev is pulled
+          git config --global user.name "github-actions[bot]"  # Set the user name
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set the email
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev:main  # Push dev to main

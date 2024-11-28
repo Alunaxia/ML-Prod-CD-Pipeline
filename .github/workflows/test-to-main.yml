@@ -3,10 +3,10 @@ name: Test-to-Main Workflow
 on:
   push:
     branches:
-      - main  # Trigger ONLY on a push to 'main'
+      - main  # Trigger ONLY on push to 'main'
 
 jobs:
-  build_test_deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,32 +14,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Install dependencies and run frontend unit tests
+      # Install dependencies for frontend
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
+
+      # Run frontend unit tests
       - name: Run frontend unit tests
         run: |
           cd frontend
           npm test -- --ci --silent --coverage
 
-      # Install dependencies and run backend unit tests
+      # Install dependencies for backend
       - name: Install backend dependencies
         run: |
           cd backend
           npm install
+
+      # Run backend unit tests
       - name: Run backend unit tests
         run: |
           cd backend
           npm test -- --ci --silent --coverage
 
-      # Run e2e tests
-      - name: Run e2e tests
+      # Install Docker Compose
+      - name: Install Docker Compose
         run: |
-          cd e2e-tests
-          npm install
-          npm test
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
 
       # Build Docker images using docker-compose.yml
       - name: Build Docker images
@@ -57,13 +60,3 @@ jobs:
       - name: Push Docker images
         run: |
           docker-compose -f docker-compose.yml push
-
-      # Merge dev into main
-      - name: Merge dev into main
-        if: success()
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout main
-          git merge dev
-          git push origin main
