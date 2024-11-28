@@ -42,7 +42,7 @@ jobs:
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge
 
-      # Pull main and push dev to main
+      # Pull main and push dev to main i
       - name: Pull main and push dev to main
         if: success()
         run: |
