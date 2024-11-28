@@ -59,5 +59,9 @@ jobs:
           # Pull the latest changes from main into dev with merge
           git pull origin main --no-rebase --allow-unrelated-histories  # Add --allow-unrelated-histories to resolve history divergence
 
+          # Handle merge conflict (automatic resolution)
+          git add .  # Add changes after resolving conflicts
+          git commit -m "Resolve merge conflict between dev and main"
+
           # Push dev to main
           git push origin dev:main
