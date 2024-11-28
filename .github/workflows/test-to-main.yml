@@ -1,12 +1,12 @@
-name: Dev-to-Main Workflow
+name: Test-to-Main Workflow
 
 on:
   push:
     branches:
-      - main
+      - dev  # Trigger when there’s a push to 'dev'
 
 jobs:
-  build_and_deploy:
+  build_test_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,34 +14,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Install dependencies and run tests for frontend
-      - name: Install and test frontend
+      # Install dependencies and run frontend unit tests
+      - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
+      - name: Run frontend unit tests
+        run: |
+          cd frontend
           npm test -- --ci --silent --coverage
 
-      # Install dependencies and run tests for backend
-      - name: Install and test backend
+      # Install dependencies and run backend unit tests
+      - name: Install backend dependencies
         run: |
           cd backend
           npm install
+      - name: Run backend unit tests
+        run: |
+          cd backend
           npm test -- --ci --silent --coverage
 
-      # Run end-to-end tests
+      # Run e2e tests
       - name: Run e2e tests
         run: |
           cd e2e-tests
           npm install
           npm test
 
-      # Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
-      # Build Docker images
+      # Build Docker images using docker-compose.yml
       - name: Build Docker images
         run: |
           docker-compose -f docker-compose.yml build
@@ -53,7 +53,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Push Docker images to Docker Hub
+      # Push the built Docker images to Docker Hub
       - name: Push Docker images
         run: |
           docker-compose -f docker-compose.yml push
+
+      # Merge dev to main
+      - name: Merge dev to main
+        if: success()
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout main
+          git merge dev
+          git push origin main
