@@ -44,18 +44,16 @@ jobs:
 
       # Pull main and push dev to main
       - name: Pull main and push dev to main
-      if: success()
-      run: |
-        # Fetch the latest changes from main
-        git fetch origin main  
-    
-        # Checkout dev branch if not already checked out
-        git checkout dev || git checkout -b dev
-    
-        # Pull the latest changes from main into dev with merge
-        git pull origin main --no-rebase  # Ensure merge is performed (or use --rebase for rebasing)
-    
-        # Push dev to main
-        git push origin dev:main
-
-
+        if: success()
+        run: |
+          # Fetch the latest changes from main
+          git fetch origin main  
+      
+          # Checkout dev branch if not already checked out
+          git checkout dev || git checkout -b dev
+      
+          # Pull the latest changes from main into dev with merge
+          git pull origin main --no-rebase  # Ensure merge is performed (or use --rebase for rebasing)
+      
+          # Push dev to main
+          git push origin dev:main
