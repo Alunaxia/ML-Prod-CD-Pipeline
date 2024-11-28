@@ -46,9 +46,10 @@ jobs:
       - name: Push dev to main
         if: success()  # Only runs if previous steps were successful
         run: |
-          git fetch origin dev  # Fetch the dev branch from the remote
-          git checkout dev  # Check out the dev branch
-          git pull origin dev  # Ensure the latest dev is pulled
-          git config --global user.name "github-actions[bot]"  # Set the user name
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set the email
+          git fetch origin dev  # Fetch the latest changes
+          git checkout dev      # Switch to the dev branch
+          git pull origin dev    # Pull any new changes from dev
+          git config --global user.name "github-actions[bot]"  # Set user name for the commit
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set user email for the commit
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev:main  # Push dev to main
+
