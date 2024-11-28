@@ -52,6 +52,10 @@ jobs:
           # Checkout dev branch if not already checked out
           git checkout dev || git checkout -b dev
 
+          # Set up the committer identity
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set email for GitHub Actions
+          git config --global user.name "github-actions[bot]"  # Set name for GitHub Actions
+
           # Pull the latest changes from main into dev with merge
           git pull origin main --no-rebase --allow-unrelated-histories  # Add --allow-unrelated-histories to resolve history divergence
 
