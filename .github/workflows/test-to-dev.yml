@@ -46,7 +46,12 @@ jobs:
       - name: Pull main and push dev to main
         if: success()
         run: |
-          git fetch origin main  # Fetch the latest changes from main
-          git checkout dev      # Ensure you're on the dev branch
-          git pull origin main   # Pull the latest changes from main into dev
-          git push origin dev:main  # Push dev to main
+          # Fetch the latest changes from main
+          git fetch origin main  
+          # Checkout dev branch if not already checked out
+          git checkout dev || git checkout -b dev
+          # Pull the latest changes from main into dev
+          git pull origin main
+          # Push dev to main
+          git push origin dev:main
+
