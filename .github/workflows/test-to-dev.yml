@@ -52,4 +52,3 @@ jobs:
           git config --global user.name "github-actions[bot]"  # Set user name for the commit
           git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set user email for the commit
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev:main  # Push dev to main
-
