@@ -46,6 +46,7 @@ jobs:
       - name: Push dev to main
         if: success()  # Only runs if previous steps were successful
         run: |
-          git checkout dev
+          git fetch origin dev  # Fetch the dev branch from the remote
+          git checkout dev  # Check out the dev branch
           git pull origin dev  # Ensure the latest dev is pulled
           git push origin dev:main  # Push dev to main
