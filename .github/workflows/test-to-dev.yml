@@ -3,7 +3,7 @@ name: Test-to-Dev Workflow
 on:
   pull_request:
     branches:
-      - dev  # Trigger when a PR is opened for 'dev'
+      - dev  # Trigger this workflow on pull requests to 'dev'
 
 jobs:
   build_and_merge:
@@ -38,6 +38,6 @@ jobs:
       - name: Merge PR to dev
         if: success()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add this line to set the token
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Added this line to set the token
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge
