@@ -3,7 +3,7 @@ name: Test-to-Main Workflow
 on:
   push:
     branches:
-      - dev  # Trigger when there’s a push to 'dev'
+      - main  # Trigger ONLY on a push to 'main'
 
 jobs:
   build_test_deploy:
@@ -58,8 +58,8 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml push
 
-      # Merge dev to main
-      - name: Merge dev to main
+      # Merge dev into main
+      - name: Merge dev into main
         if: success()
         run: |
           git config user.name "GitHub Actions"
