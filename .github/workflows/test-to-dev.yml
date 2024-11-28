@@ -36,7 +36,7 @@ jobs:
 
       # Merge PR to dev if all tests pass
       - name: Merge PR to dev
-        if: success()
+        if: success()  # Only run this if the previous steps succeed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add this line to set the token
         run: |
@@ -49,19 +49,11 @@ jobs:
           # Fetch the latest changes from main
           git fetch origin main  
 
-          # Checkout dev branch if not already checked out
+          # Checkout dev branch or create it if not exists
           git checkout dev || git checkout -b dev
 
-          # Set up the committer identity
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set email for GitHub Actions
-          git config --global user.name "github-actions[bot]"  # Set name for GitHub Actions
-
-          # Pull the latest changes from main into dev with merge
-          git pull origin main --no-rebase --allow-unrelated-histories  # Add --allow-unrelated-histories to resolve history divergence
-
-          # Handle merge conflict (automated conflict resolution)
-          git add .  # Automatically stage resolved conflicts (if no manual intervention is needed)
-          git commit -m "Resolve merge conflict between dev and main"
+          # Pull the latest changes from main into dev, allowing unrelated histories
+          git pull origin main --allow-unrelated-histories --no-rebase  # Merge, use --rebase for rebasing
 
           # Push dev to main
           git push origin dev:main
